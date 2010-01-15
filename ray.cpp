@@ -131,7 +131,7 @@ int main(int argc, char *argv[]) {
   cout << "P5\n" << n << " " << n << "\n255\n";
   char* ar = (char*) malloc (sizeof (char) * n * n);
 
-#pragma omp parallel for shared (ar) schedule (guided)
+#pragma omp parallel for schedule (guided)
   for (int y=n-1; y>=0; --y)
     for (int x=0; x<n; ++x) {
       double g=0;
@@ -141,7 +141,6 @@ int main(int argc, char *argv[]) {
 	  g += ray_trace(neg_light, dir, *s);
 	}
       *(ar + x + n*y) = char(int(.5 + 255. * g / (ss*ss)));
-      //      cout << char(int(.5 + 255. * g / (ss*ss)));
     }
   
   for (int y=n-1; y>=0; --y) {
