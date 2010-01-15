@@ -131,7 +131,7 @@ int main(int argc, char *argv[]) {
   cout << "P5\n" << n << " " << n << "\n255\n";
   char* ar = (char*) malloc (sizeof (char) * n * n);
 
-#pragma omp parallel for
+#pragma omp parallel for shared (ar) schedule (guided)
   for (int y=n-1; y>=0; --y)
     for (int x=0; x<n; ++x) {
       double g=0;

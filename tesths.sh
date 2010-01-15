@@ -2,7 +2,7 @@
 
 TIMEFORMAT="%R"
 PATH=$PATH:./
-cmd="ray4-hs"
+cmd="rayhs"
 sz="512"
 outp="piccpp.pgm"
 
