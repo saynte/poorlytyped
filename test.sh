@@ -15,11 +15,11 @@ do
   for p in {1..8};
   do
     echo "Processors: $p"
-    OMP_NUM_THREADS=$p
+#    OMP_NUM_THREADS=$p
     for i in {1..5};
     do
       cmd2="$cmd $l $sz";
-      time  $cmd2 > $outp;
+      time OMP_NUM_THREADS=$p $cmd2 > $outp;
     done;
   done;
 done;
