@@ -4,11 +4,11 @@ TIMEFORMAT="%R"
 PATH=$PATH:./
 cmd="rayhs"
 sz="512"
-outp="piccpp.pgm"
+outp="pichs.pgm"
 
 echo "CPP"
 
-for l in 12 13;
+for l in 9 12 13;
 do
   echo "Level: $l"
 
