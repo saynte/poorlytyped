@@ -11,8 +11,8 @@ raycpp: ray.cpp
 
 tests: cpptests.txt hstests.txt
 
-cpptests.txt: raycpp
+cpptests.txt: raycpp test.sh
 	sh test.sh &> cpptests.txt
 
-hstests.txt: rayhs
+hstests.txt: rayhs tesths.sh
 	sh tesths.sh &> hstests.txt
