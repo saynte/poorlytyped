@@ -1,4 +1,4 @@
-GHC_OPT=-O2 -fforce-recomp -fexcess-precision -funbox-strict-fields -fvia-c -optc-O3 -optc-ffast-math -funfolding-keeness-factor=10 -threaded -feager-blackholing
+GHC_OPT=-O2 -fforce-recomp -fexcess-precision -funbox-strict-fields -fvia-c -optc-O3 -optc-ffast-math -optc-march=native -funfolding-keeness-factor=10 -threaded -feager-blackholing
 
 
 all: rayhs raycpp

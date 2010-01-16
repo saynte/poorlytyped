@@ -26,12 +26,12 @@ unitise :: Vector3 -> Vector3
 unitise r = 1 / len r *| r
 
 data Scene = S !Vector3 !Double [Scene]
-data Hit = H {l :: !Double, nv :: Vector3}
+data Hit = H { lam :: !Double, nv ::  Vector3}
 
 ray_sphere :: Vector3 -> Vector3 -> Double -> Double
 ray_sphere dir v radius =
     let  disc = v .* v - radius * radius
-         b = (v .* dir)
+         b = v .* dir
          b2 = b*b
     in if disc < 0 || b2 < disc
        then infinity
@@ -39,37 +39,36 @@ ray_sphere dir v radius =
                 t1 = b - disk
             in if t1 > 0 then t1 else b + disk
 
-ray_sphere' :: Vector3 -> Vector3 -> Vector3 -> Double -> Bool
-ray_sphere' orig dir center radius =
+ray_sphere' :: Vector3 -> Vector3 -> Double -> Bool
+ray_sphere' orig center radius =
     let v = center - orig
-        b = v .* dir
+        b = v .* neg_light
         b2 = b * b
         rest = v .* v - radius * radius
     in  b2 >= rest && (b > 0 || rest < 0)
 
-intersect dir first@(H l _) !(S center radius scene) =
+intersect dir first !(S center radius scene) =
     let l' = ray_sphere dir center radius
-    in  if l' >= l 
+    in  if l' >= lam first
         then first
         else case scene of
                [] -> H l' (unitise (l' *| dir - center))
                scenes -> foldl' (intersect dir) first scenes
 
-intersect' orig dir !(S center radius scenes) =
-    ray_sphere' orig dir center radius && 
-                    (null scenes || any (intersect' orig dir) scenes)
+intersect' orig !(S center radius scenes) =
+    ray_sphere' orig center radius && 
+                    (null scenes || any (intersect' orig) scenes)
 
-ray_trace light dir scene =
+ray_trace dir scene =
     case intersect dir (H infinity 0) scene of
       H 0 _ -> infinity
       H lambda normal ->
           let g = normal .* light
           in  if g >= 0 then 0
               else let p = lambda *| dir + delta *| normal
-                   in  if intersect' p neg_light scene then 0 else - g
+                   in  if intersect' p scene then 0 else - g
 
-       
-neg_light = unitise (Vector3 1 3 (-2))
+neg_light = -light
 
 bound (S c r s) (S c' r' []) = S c (max r (len (c - c') + r')) s
 bound b (S  _ _ l) = foldl' bound b l
@@ -89,7 +88,7 @@ pixel_vals n scene y x =
     [ let 
         f a da = a - n / 2 + da / ss
         d = unitise (vect (f x dx) (f y dy) n)
-   in ray_trace light d scene | dx <- [0..ss-1], dy <- [0..ss-1] ]
+   in ray_trace d scene | dx <- [0..ss-1], dy <- [0..ss-1] ]
 
 main = do 
     [level,ni] <- fmap (map read) getArgs
