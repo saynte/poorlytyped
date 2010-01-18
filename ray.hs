@@ -47,7 +47,7 @@ ray_sphere' orig center radius =
         rest = v .* v - radius * radius
     in  b2 >= rest && (b > 0 || rest < 0)
 
-intersect dir first !(S center radius scene) =
+intersect dir first (S center radius scene) =
     let l' = ray_sphere dir center radius
     in  if l' >= lam first
         then first
@@ -55,7 +55,7 @@ intersect dir first !(S center radius scene) =
                [] -> H l' (unitise (l' *| dir - center))
                scenes -> foldl' (intersect dir) first scenes
 
-intersect' orig !(S center radius scenes) =
+intersect' orig (S center radius scenes) =
     ray_sphere' orig center radius && 
                     (null scenes || any (intersect' orig) scenes)
 
