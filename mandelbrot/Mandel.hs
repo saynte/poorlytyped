@@ -14,7 +14,7 @@ mandel w = let m = 2 / fromIntegral w
                cs = [fromIntegral y * m - 1 | y <- [0..w-1]]
            in B.concat . parBuffer 64 rwhnf . map (fst . unfolded w m) $ cs
 
-unfolded w m ci = B.unfoldrN (w `div` 8) (next_x w m ci) 1
+unfolded w m ci = B.unfoldrN (w `div` 8) (next_x w m ci) 0
 
 next_x !w !iw !ci !x
     | x >= w    = Nothing
