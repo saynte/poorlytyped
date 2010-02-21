@@ -10,10 +10,9 @@ import System.IO
 mandelWrite w h = hPutStrLn h ("P4\n"++show w++" "++show w) >> 
                   B.hPutStr h (mandel w)
 
-mandel w =
-    let m = 2 / fromIntegral w
-        coords = [fromIntegral y * m - 1 | y <- [0..w-1]]
-    in B.concat . parBuffer 64 rwhnf . map (fst . unfolded w m) $ coords
+mandel w = let m = 2 / fromIntegral w
+               cs = [fromIntegral y * m - 1 | y <- [0..w-1]]
+           in B.concat . parBuffer 64 rwhnf . map (fst . unfolded w m) $ cs
 
 unfolded w m ci = B.unfoldrN (w `div` 8) (next_x w m ci) 1
 
