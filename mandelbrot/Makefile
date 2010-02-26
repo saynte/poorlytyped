@@ -10,4 +10,4 @@ test: mandeltest
 	./mandeltest -k win
 
 test-threaded: mandeltest
-	./mandeltest -k win +RTS -N4 -RTS
+	./mandeltest -k png:800x600 +RTS -N4 -RTS
